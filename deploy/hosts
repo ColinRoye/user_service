@@ -1,0 +1,2 @@
+[app]
+{{ ipAddr }} ansible_user=ubuntu
