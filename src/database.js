@@ -1,4 +1,3 @@
-var mongoose = require('mongoose');
 const env = require("./env");
 const debug = require("./debug");
 
