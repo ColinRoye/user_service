@@ -1,14 +1,28 @@
 const debug = require("./src/debug");
+const env = require("./src/env");
+require('./src/schema.js');
+
 const express = require('express')
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 var cors = require('cors');
+var mongoose = require('mongoose');
+
+let mongoUrl;
+if(process.argv.includes("-d")){
+     mongoUrl = env.mongoUrlDev
+}else{
+     mongoUrl = env.mongoUrlProd
+}
+mongoose.connect( mongoUrl,
+    { useNewUrlParser: true });
+     mongoose.set('debug', false);
+
 
 const app = express()
 const args = process.argv;
 var port = 3000
 
-require('./src/schema.js');
 
 
 
