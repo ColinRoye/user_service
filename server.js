@@ -8,12 +8,16 @@ const cookieParser = require("cookie-parser")
 var cors = require('cors');
 var mongoose = require('mongoose');
 
-let mongoUrl;
-if(process.argv.includes("-d")){
-     mongoUrl = env.mongoUrlDev
-}else{
-     mongoUrl = env.mongoUrlProd
-}
+let mongoUrl = env.mongoUrl();
+// if(process.argv.includes("-d")){
+//      return env.mongoUrlDev
+// }else if(process.argv.includes("-stage")){
+//      return env.mongoUrlStage
+// }else{
+//      return env.mongoUrlStage
+// }
+console.log("tesasdft")
+
 mongoose.connect( mongoUrl,
     { useNewUrlParser: true });
      mongoose.set('debug', false);
