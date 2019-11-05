@@ -19,7 +19,7 @@ const axios = require("axios");
 //item_db
 let getPosts =      async(username, limit)=>{
      let url = env.baseUrl + "/items/" + username
-     console.log(url)
+     debug.log("LIMIT IN GET POSTS: " + limit);
      return axios.get(url, {
           params: {
                limit:limit
@@ -82,7 +82,7 @@ router.get('/user/:username', async (req, res, next)=>{
 });
 router.get('/user/:username/posts', async (req, res, next)=>{
      debug.log("INPUT: /user/:username/posts" + JSON.stringify(req.params))
-
+     debug.log("LIMIT: " + req.body.limit)
      res.send((await getPosts(req.params.username,req.body.limit)).data);
 });
 
