@@ -38,7 +38,7 @@ module.exports={
           return ret;
      },
      unfollow: async(username, unfollowsUserUsername)=>{
-          let ret
+          let ret = {}
           let userCheck = (await axios.get(env.baseUrl + '/account/' + username)).data;
           let unfollowsUserCheck = (await axios.get(env.baseUrl + '/account/' + unfollowsUserUsername)).data;
           if(userCheck && unfollowsUserCheck){
