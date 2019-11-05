@@ -9,14 +9,7 @@ var cors = require('cors');
 var mongoose = require('mongoose');
 
 let mongoUrl = env.mongoUrl();
-// if(process.argv.includes("-d")){
-//      return env.mongoUrlDev
-// }else if(process.argv.includes("-stage")){
-//      return env.mongoUrlStage
-// }else{
-//      return env.mongoUrlStage
-// }
-console.log("tesasdft")
+
 
 mongoose.connect( mongoUrl,
     { useNewUrlParser: true });

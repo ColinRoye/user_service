@@ -9,25 +9,51 @@ module.exports={
      getUserByUsername: async(username)=>{
           return await User.findOne({username: username})
      },
-
+     addUser: async(username)=>{
+          let user = new User;
+          user.username = username;
+          user.followers = [];
+          user.following = [];
+          await user.save();
+          return user
+     },
 
 
      follow: async(username, followsUserUsername)=>{
+          debug.log("FOLLOW_DATABASE: top")
           let user = await User.findOne({username: username});
           let followsUser = await User.findOne({username: followsUserUsername});
           if(!user){
-               let user = new User;
-               user.username = user.username;
+               debug.log("FOLLOW_DATABASE: user NOT defined")
+               user = new User;
+               user.username = username;
+               user.followers = [];
+               user.following = [];
+               debug.log("FOLLOW_DATABASE: user is defined to " + JSON.stringify(user))
+
+
           }
           if(!followsUser){
-               let followsUser = new User;
-               followsUser.followsUserUsername = user.followsUserUsername;
+               debug.log("FOLLOW_DATABASE: followUser NOT defined")
+               followsUser = new User;
+               followsUser.followsUserUsername = followsUserUsername;
+               followsUser.followers = [];
+               followsUser.following = [];
           }
-          user.follows.push(followsUserUsername);
+
+
+          user.following.push(followsUserUsername);
           followsUser.followers.push(username)
 
-          user.save();
-          followsUser.save();
+          debug.log("FOLLOW_DATABASE: User follows array" + user.follows)
+          debug.log("FOLLOW_DATABASE: User follows array" + followsUser.following)
+
+
+
+          await user.save();
+          await followsUser.save();
+
+          return "ok";
 
 
      },
