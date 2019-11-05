@@ -26,8 +26,7 @@ module.exports={
           if(userCheck && followsUserCheck){
                debug.log("FOLLOW_SERVICE: BOTH USERS EXIST")
 
-               let out = await db.follow(username, userCheck, followsUserUsername, followsUserCheck);
-               debug.log(out);
+               ret.debug = await db.unfollow(username, userCheck, followsUserUsername, followsUserCheck);
                ret.status = env.statusOk;
           }else{
                if(userCheck && !followsUserCheck){
@@ -43,15 +42,33 @@ module.exports={
           }
           return ret;
      },
-     unfollow: async(username, unfollowsUserUsername)=>{
-          let ret = {}
+     unfollow: async(username, followsUserUsername)=>{
+          debug.log("UNFOLLOW_SERVICE: TOP")
+          debug.log("UNFOLLOW_SERVICE: USERNAME " + username)
+          debug.log("UNFOLLOW_SERVICE: USERNAME " + followsUserUsername)
+
+          let ret = {};
           let userCheck = (await axios.get(env.baseUrl + '/account/' + username)).data;
-          let unfollowsUserCheck = (await axios.get(env.baseUrl + '/account/' + unfollowsUserUsername)).data;
-          if(userCheck && unfollowsUserCheck){
-               let out = await db.unfollow(username, unfollowsUserUsername);
+          debug.log("UNFOLLOW_SERVICE: USERCHECK " + userCheck);
+          let followsUserCheck = (await axios.get(env.baseUrl + '/account/' + followsUserUsername)).data;
+          debug.log("UNFOLLOW_SERVICE: FOLLOWUSERCHECK " + followsUserCheck);
+
+          if(userCheck && followsUserCheck){
+               debug.log("UNFOLLOW_SERVICE: BOTH USERS EXIST")
+
+               ret.debug  = await db.follow(username, userCheck, followsUserUsername, followsUserCheck);
                debug.log(out);
                ret.status = env.statusOk;
           }else{
+               if(userCheck && !followsUserCheck){
+                    debug.log("UNFOLLOW_SERVICE: ERROR user exists, but followUser does not")
+                    //await addUser
+               }else if(!userCheck && followsUserCheck){
+                    debug.log("UNFOLLOW_SERVICE: ERROR followUser exists, but user does not")
+               }else{
+                    debug.log("UNFOLLOW_SERVICE: neither exists")
+
+               }
                ret.status = env.statusError;
           }
           return ret;

@@ -11,7 +11,7 @@ var mongoose = require('mongoose');
 let mongoUrl = env.mongoUrl();
 
 
-mongoose.connect( mongoUrl,
+mongoose.connect( mongoUrl+"1",
     { useNewUrlParser: true });
      mongoose.set('debug', true);
 

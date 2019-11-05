@@ -6,8 +6,9 @@ var UserServiceSchema = new mongoose.Schema({
           type: String,
           unique: true,
      },
-     following: [String],
-     followers: [String]
+     following: [{type: String}],
+     followers: [{type: String}],
+
 });
 
 UserServiceSchema.plugin(uniqueValidator, {message: 'is already in use.'});
