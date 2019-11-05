@@ -93,7 +93,7 @@ router.get('/user/:username/posts', async (req, res, next)=>{
 
 
 router.post('/follow', async (req, res, next)=>{
-     debug.log("INPUT: /follow" + JSON.stringify(req.params))
+     debug.log("INPUT: /follow" + JSON.stringify(req.body))
 
      debug.log("FOLLOW_ROUTE: top")
      let args = req.body;

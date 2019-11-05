@@ -41,7 +41,7 @@ module.exports={
           let ret
           let userCheck = (await axios.get(env.baseUrl + '/account/' + username)).data;
           let unfollowsUserCheck = (await axios.get(env.baseUrl + '/account/' + unfollowsUserUsername)).data;
-          if(userCheck && followsUserCheck){
+          if(userCheck && unfollowsUserCheck){
                let out = await db.unfollow(username, unfollowsUserUsername);
                debug.log(out);
                ret.status = env.statusOk;
