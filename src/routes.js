@@ -83,8 +83,7 @@ router.get('/user/:username', async (req, res, next)=>{
 router.get('/user/:username/posts', async (req, res, next)=>{
      debug.log("INPUT: /user/:username/posts" + JSON.stringify(req.params))
 
-     let body = {limit: 1}
-     res.send((await getPosts(req.params.username,body.limit)).data);
+     res.send((await getPosts(req.params.username,req.body.limit)).data);
 });
 
 
