@@ -35,8 +35,9 @@ router.get('/user/:username/following', async (req, res, next)=>{
      res.send(await service.getFollowing(req.params.username,req.body));
 });
 router.get('/user/:username', async (req, res, next)=>{
+     debug.log("INPUT: " + JSON.stringify(req.params))
      let ret = {}
-     debug.log("USER/:USERNAME ROUTE: " + req.params.username)
+     debug.log("USER/:USERNAME ROUTE: " + req.params.email)
 
      if(ret.email !== ""){
           ret.email = (await axios.get(env.baseUrl + '/account/' + req.params.username)).data;
@@ -55,13 +56,14 @@ router.get('/user/:username', async (req, res, next)=>{
                ret.followers = "0";
                ret.following = "0";
           }
+
           ret.status = env.statusOk;
           debug.log(ret);
           res.send(ret);
      }else{
           ret.status = env.statusError;
           debug.log(ret);
-          
+          debug.log("OUTPUT: " + JSON.stringify(ret))
           res.send(ret)
      }
 
