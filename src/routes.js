@@ -56,9 +56,12 @@ router.get('/user/:username', async (req, res, next)=>{
                ret.following = "0";
           }
           ret.status = env.statusOk;
+          debug.log(ret);
           res.send(ret);
      }else{
           ret.status = env.statusError;
+          debug.log(ret);
+          
           res.send(ret)
      }
 
