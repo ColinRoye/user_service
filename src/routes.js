@@ -40,10 +40,10 @@ router.get('/user/:username', async (req, res, next)=>{
      debug.log("INPUT: /user/:username: " + JSON.stringify(req.params))
      let ret = {}
      debug.log("USER/:USERNAME ROUTE: " + req.params.email)
+     let email = (await axios.get(env.baseUrl + '/account/' + req.params.username)).data;
 
-     if(ret.email !== ""){
-          ret.email = (await axios.get(env.baseUrl + '/account/' + req.params.username)).data;
-          debug.log("USER/:USERNAME ROUTE: EMAIL" + ret.email)
+     if(email !== ""){
+          debug.log("USER/:USERNAME ROUTE: EMAIL" + email)
 
           let user = await service.getUserByUsername(req.params.username);
           if(user === null){
@@ -55,14 +55,14 @@ router.get('/user/:username', async (req, res, next)=>{
                ret.user = {
                     "followers": user.followers.length + "",
                     "following": user.following.length + "",
-                    "email": ret.email
+                    "email": email
                }
 
           }else{
                ret.user = {
                     "followers": "0",
                     "following": "0",
-                    "email": ret.email
+                    "email": email
                }
           }
 
