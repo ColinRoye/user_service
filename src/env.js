@@ -1,7 +1,7 @@
 
 module.exports={
      statusOk: "OK",
-     statusError: "ERROR",
+     statusError: "error",
      baseUrl: "http://hackguy.cse356.compas.cs.stonybrook.edu",
      mongoUrlProd: "mongodb://130.245.170.213:27017/docker-node-mongo",
      mongoUrl: ()=>{
