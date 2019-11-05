@@ -93,7 +93,7 @@ router.get('/user/:username/posts', async (req, res, next)=>{
 
 
 router.post('/follow', async (req, res, next)=>{
-     debug.log("INPUT: /follow" + JSON.stringify(req.body))
+     debug.log("INPUT: FOLLOW_ROUTE: /follow" + JSON.stringify(req.body))
 
      debug.log("FOLLOW_ROUTE: top")
      let args = req.body;
@@ -101,9 +101,9 @@ router.post('/follow', async (req, res, next)=>{
      let user = req.cookies['auth'];
      let followUser = args.username;
      if(user){
-          debug.log("args.follow === undefined " + args.follow === undefined);
-          debug.log("args.follow === true " + args.follow === "true");
-          debug.log("args.follow"+args.follow);
+          debug.log("FOLLOW_ROUTE: args.follow === undefined " + args.follow === undefined);
+          debug.log("FOLLOW_ROUTE: args.follow === true " + args.follow === "true");
+          debug.log("FOLLOW_ROUTE: args.follow"+args.follow);
 
           if(args.follow === undefined || args.follow === "true"){
                debug.log("FOLLOW_ROUTE: FOLLOW")
