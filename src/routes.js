@@ -32,11 +32,11 @@ let getPosts =      async(username, limit)=>{
 
 router.get('/user/:username/followers', async (req, res, next)=>{
      debug.log("INPUT: /user/:username/followers " + JSON.stringify(req.params))
-     res.send(await services.getFollowers(req.params.username,req.body));
+     res.send(await services.getFollowers(req.params.username,req.query));
 });
 router.get('/user/:username/following', async (req, res, next)=>{
      debug.log("INPUT: /user/:username/following: " + JSON.stringify(req.params))
-     res.send(await service.getFollowing(req.params.username,req.body));
+     res.send(await service.getFollowing(req.params.username,req.query));
 });
 router.get('/user/:username', async (req, res, next)=>{
      debug.log("INPUT: /user/:username: " + JSON.stringify(req.params))
@@ -84,8 +84,8 @@ router.get('/user/:username', async (req, res, next)=>{
 });
 router.get('/user/:username/posts', async (req, res, next)=>{
      debug.log("INPUT: /user/:username/posts" + JSON.stringify(req.params))
-     debug.log("LIMIT: " + req.body.limit)
-     res.send((await getPosts(req.params.username,req.body.limit)).data);
+     debug.log("LIMIT: " + req.query.limit)
+     res.send((await getPosts(req.params.username,req.query.limit)).data);
 });
 
 
