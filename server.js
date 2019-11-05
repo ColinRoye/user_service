@@ -13,7 +13,7 @@ let mongoUrl = env.mongoUrl();
 
 mongoose.connect( mongoUrl,
     { useNewUrlParser: true });
-     mongoose.set('debug', false);
+     mongoose.set('debug', true);
 
 
 const app = express()
