@@ -18,13 +18,10 @@ const axios = require("axios");
 
 //item_db
 let getPosts =      async(username, limit)=>{
-     let url = env.baseUrl + "/items/" + username
+     debug.log("FUCK : " +  env.baseUrl + "/items/" + username )
+     let url = env.baseUrl + "/items/" + username + "/" + limit
      debug.log("LIMIT IN GET POSTS: " + limit);
-     return axios.get(url, {
-          params: {
-               limit:limit
-          }
-  })
+     return axios.get(url);
 }
 
 
