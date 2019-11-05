@@ -53,15 +53,15 @@ router.get('/user/:username', async (req, res, next)=>{
           debug.log("USER/:USERNAME ROUTE: USER" + user)
           if(user.followers && user.following){
                ret.user = {
-                    "followers": user.followers.length + "",
-                    "following": user.following.length + "",
+                    "followers": user.followers.length ,
+                    "following": user.following.length ,
                     "email": email
                }
 
           }else{
                ret.user = {
-                    "followers": "0",
-                    "following": "0",
+                    "followers": 0,
+                    "following": 0,
                     "email": email
                }
           }
