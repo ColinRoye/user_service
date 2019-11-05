@@ -22,6 +22,9 @@ let getPosts =      async(username, limit)=>{
      if(!limit){
           limit = 50
      }
+     if(limit > 200){
+          limit = 200;
+     }
      debug.log("FUCK : " +  env.baseUrl + "/items/" + username + "/" + limit)
 
      let url = env.baseUrl + "/items/" + username + "/" + limit
