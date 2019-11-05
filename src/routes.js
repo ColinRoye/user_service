@@ -61,7 +61,7 @@ router.get('/user/:username', async (req, res, next)=>{
           debug.log(ret);
           debug.log("OUTPUT: " + JSON.stringify(ret))
 
-          res.send(ret);
+          res.send(JSON.stringify(ret));
      }else{
           ret.status = env.statusError;
           debug.log(ret);
