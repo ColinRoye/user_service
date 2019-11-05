@@ -35,24 +35,49 @@ let getPosts =      async(username, limit)=>{
 
 router.get('/user/:username/followers', async (req, res, next)=>{
      debug.log("INPUT: /user/:username/followers " + JSON.stringify(req.params))
-     res.send(await services.getFollowers(req.params.username,req.query));
+     //debug.log(JSON.stringify(await service.getUserByEmail("c@c.cccccccc")))
+     let followers = (await service.getUserByEmail(await req.params.username)).followers;
+     let temp = [];
+     if(req.query.limit == undefined){
+          req.query.limit = 50
+     }
+     if(req.query.limit > 200){
+          req.query.limit = 200
+     }
+     for(let i = 0; i < req.query.limit;i++){
+          temp.push(followers[i]);
+     }
+     res.send({users: temp, status:"OK"})
 });
 router.get('/user/:username/following', async (req, res, next)=>{
-     debug.log("INPUT: /user/:username/following: " + JSON.stringify(req.params))
-     res.send(await service.getFollowing(req.params.username,req.query));
+     debug.log("INPUT: /user/:username/followers " + JSON.stringify(req.params))
+     //debug.log(JSON.stringify(await service.getUserByEmail("c@c.cccccccc")))
+     let following = (await service.getUserByEmail(await req.params.username)).following;
+     let temp = [];
+     if(req.query.limit == undefined){
+          req.query.limit = 50
+     }
+     if(req.query.limit > 200){
+          req.query.limit = 200
+     }
+     for(let i = 0; i < req.query.limit;i++){
+          temp.push(following[i]);
+     }
+     res.send({users: temp, status:"OK"})
 });
 router.get('/user/:username', async (req, res, next)=>{
      debug.log("INPUT: /user/:username: " + JSON.stringify(req.params))
      let ret = {}
      debug.log("USER/:USERNAME ROUTE: " + req.params.email)
      let email = (await axios.get(env.baseUrl + '/account/' + req.params.username)).data;
+     debug.log("email" + email)
 
      if(email !== ""){
           debug.log("USER/:USERNAME ROUTE: EMAIL" + email)
 
-          let user = await service.getUserByUsername(req.params.username);
+          let user = await service.getUserByEmail(email);
           if(user === null){
-               user = await service.addUser(req.params.username)
+               user = await service.addUser(email)
           }
 
           debug.log("USER/:USERNAME ROUTE: USER" + user)

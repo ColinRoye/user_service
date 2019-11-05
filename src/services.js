@@ -6,8 +6,11 @@ const axios = require("axios")
 
 //export db agnostic services
 module.exports={
-     addUser: async(username)=>{
-          return await db.addUser(username);
+     addUser: async(email)=>{
+          if(email !== null){
+               return await db.addUser(email);
+          }
+          return "error"
      },
      follow: async(username, followsUserUsername)=>{
           debug.log("FOLLOW_SERVICE: TOP")
@@ -23,14 +26,17 @@ module.exports={
           if(userCheck && followsUserCheck){
                debug.log("FOLLOW_SERVICE: BOTH USERS EXIST")
 
-               let out = await db.follow(username, followsUserUsername);
+               let out = await db.follow(username, userCheck, followsUserUsername, followsUserCheck);
                debug.log(out);
                ret.status = env.statusOk;
           }else{
-               if(userCheck){
+               if(userCheck && !followsUserCheck){
                     debug.log("FOLLOW_SERVICE: ERROR user exists, but followUser does not")
-               }else{
+                    //await addUser
+               }else if(!userCheck && followsUserCheck){
                     debug.log("FOLLOW_SERVICE: ERROR followUser exists, but user does not")
+               }else{
+                    debug.log("FOLLOW_SERVICE: neither exists")
 
                }
                ret.status = env.statusError;
@@ -50,8 +56,9 @@ module.exports={
           }
           return ret;
      },
-     getUserByUsername: async(username)=>{
-          return await db.getUserByUsername(username)
+     getUserByEmail: async(email)=>{
+          debug.log((JSON.stringify(await db.getUserByEmail(email))))
+          return await db.getUserByEmail(email)
      },
      getFollowers: async(username)=>{
 

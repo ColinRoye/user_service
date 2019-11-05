@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 
 var UserServiceSchema = new mongoose.Schema({
-     username: {
+     email: {
           type: String,
           unique: true,
      },
