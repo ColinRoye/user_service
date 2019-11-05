@@ -2,19 +2,19 @@
 - hosts: app
   become: true
   tasks:
-    - name: Install required system packages
-      apt: name={{ item }} state=latest update_cache=yes
-      loop: [ 'docker', 'docker-compose' ]
+    # - name: Install required system packages
+    #   apt: name={{ item }} state=latest update_cache=yes
+    #   loop: [ 'docker', 'docker-compose' ]
     - git:
         repo: https://github.com/ColinRoye/user_service
         dest: /app
         force: yes
-    - name: Clean Docker
-      shell: cd /app && echo y | sudo docker system prune
-    - name: Up Ram
-      shell: cd /app && sudo sysctl -w vm.max_map_count=524288
-    - name: Install Packages
-      shell: cd /app && npm install
-    - name: Build
-      shell: cd /app && sudo npm run prod
+    # - name: Clean Docker
+    #   shell: cd /app && echo y | sudo docker system prune
+    # - name: Up Ram
+    #   shell: cd /app && sudo sysctl -w vm.max_map_count=524288
+    # - name: Install Packages
+    #   shell: cd /app && npm install
+    # - name: Build
+    #   shell: cd /app && sudo npm run prod
       become: True
