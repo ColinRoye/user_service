@@ -52,11 +52,18 @@ router.get('/user/:username', async (req, res, next)=>{
 
           debug.log("USER/:USERNAME ROUTE: USER" + user)
           if(user.followers && user.following){
-               ret.followers = user.followers.length
-               ret.following = user.following.length
+               ret.user = {
+                    "followers": user.followers.length + "",
+                    "following": user.following.length + "",
+                    "email": ret.email
+               }
+
           }else{
-               ret.followers = "0";
-               ret.following = "0";
+               ret.user = {
+                    "followers": "0",
+                    "following": "0",
+                    "email": ret.email
+               }
           }
 
           ret.status = env.statusOk;
@@ -82,7 +89,7 @@ router.get('/user/:username/posts', async (req, res, next)=>{
 
 router.post('/follow', async (req, res, next)=>{
      debug.log("INPUT: /follow" + JSON.stringify(req.params))
-     
+
      debug.log("FOLLOW_ROUTE: top")
      let args = req.body;
      let ret = {};
