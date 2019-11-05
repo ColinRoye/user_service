@@ -73,6 +73,7 @@ router.get('/user/:username', async (req, res, next)=>{
           res.send(JSON.stringify(ret));
      }else{
           ret.status = env.statusError;
+          ret.error = "USER DNE"
           debug.log(ret);
           res.send(ret)
      }
