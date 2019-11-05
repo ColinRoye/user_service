@@ -57,9 +57,11 @@ router.get('/user/:username', async (req, res, next)=>{
           }
           ret.status = env.statusOk;
           res.send(ret);
+     }else{
+          ret.status = env.statusError;
+          res.send(ret)
      }
-     ret.status = env.statusError;
-     res.send(ret)
+
 
 });
 router.get('/user/:username/posts', async (req, res, next)=>{

@@ -4,7 +4,7 @@
   tasks:
     - name: Install required system packages
       apt: name={{ item }} state=latest update_cache=yes
-      loop: [ 'docker', 'docker-compose']
+      loop: [ 'docker', 'docker-compose' ]
     - git:
         repo: https://github.com/ColinRoye/user_service
         dest: /app
