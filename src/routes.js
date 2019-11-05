@@ -29,13 +29,15 @@ let getPosts =      async(username, limit)=>{
 
 
 router.get('/user/:username/followers', async (req, res, next)=>{
+     debug.log("INPUT: /user/:username/followers " + JSON.stringify(req.params))
      res.send(await services.getFollowers(req.params.username,req.body));
 });
 router.get('/user/:username/following', async (req, res, next)=>{
+     debug.log("INPUT: /user/:username/following: " + JSON.stringify(req.params))
      res.send(await service.getFollowing(req.params.username,req.body));
 });
 router.get('/user/:username', async (req, res, next)=>{
-     debug.log("INPUT: " + JSON.stringify(req.params))
+     debug.log("INPUT: /user/:username: " + JSON.stringify(req.params))
      let ret = {}
      debug.log("USER/:USERNAME ROUTE: " + req.params.email)
 
@@ -71,6 +73,7 @@ router.get('/user/:username', async (req, res, next)=>{
 
 });
 router.get('/user/:username/posts', async (req, res, next)=>{
+     debug.log("INPUT: /user/:username/posts" + JSON.stringify(req.params))
 
      let body = {limit: 1}
      res.send((await getPosts(req.params.username,body.limit)).data);
@@ -78,6 +81,8 @@ router.get('/user/:username/posts', async (req, res, next)=>{
 
 
 router.post('/follow', async (req, res, next)=>{
+     debug.log("INPUT: /follow" + JSON.stringify(req.params))
+     
      debug.log("FOLLOW_ROUTE: top")
      let args = req.body;
      let ret = {};
