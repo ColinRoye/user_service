@@ -35,8 +35,7 @@ let getPosts =      async(username, limit)=>{
 
 router.get('/user/:username/followers', async (req, res, next)=>{
      debug.log("INPUT: /user/:username/followers " + JSON.stringify(req.params))
-     //debug.log(JSON.stringify(await service.getUserByEmail("c@c.cccccccc")))
-     let followers = (await service.getUserByEmail(await req.params.username)).followers;
+     let followers = (await service.getOrCreateUserByUsername(req.params.username, "arr")).user.followers
      let temp = [];
      if(req.query.limit == undefined){
           req.query.limit = 50
@@ -44,15 +43,14 @@ router.get('/user/:username/followers', async (req, res, next)=>{
      if(req.query.limit > 200){
           req.query.limit = 200
      }
-     for(let i = 0; i < req.query.limit;i++){
+     for(let i = 0; i < req.query.limit &&  i < followers.length;i++){
           temp.push(followers[i]);
      }
-     res.send({users: temp, status:"OK"})
+     res.send({followers: temp, status:"OK"})
 });
 router.get('/user/:username/following', async (req, res, next)=>{
-     debug.log("INPUT: /user/:username/followers " + JSON.stringify(req.params))
-     //debug.log(JSON.stringify(await service.getUserByEmail("c@c.cccccccc")))
-     let following = (await service.getUserByEmail(await req.params.username)).following;
+     debug.log("INPUT: /user/:username/following " + JSON.stringify(req.params))
+     let following = (await service.getOrCreateUserByUsername(req.params.username, "arr")).user.following
      let temp = [];
      if(req.query.limit == undefined){
           req.query.limit = 50
@@ -60,55 +58,14 @@ router.get('/user/:username/following', async (req, res, next)=>{
      if(req.query.limit > 200){
           req.query.limit = 200
      }
-     for(let i = 0; i < req.query.limit;i++){
+     for(let i = 0; i < req.query.limit && i < following.length;i++){
           temp.push(following[i]);
      }
-     res.send({users: temp, status:"OK"})
+     res.send({following: temp, status:"OK"})
 });
 router.get('/user/:username', async (req, res, next)=>{
-     debug.log("INPUT: /user/:username: " + JSON.stringify(req.params))
-     let ret = {}
-     debug.log("USER/:USERNAME ROUTE: " + req.params.email)
-     let email = (await axios.get(env.baseUrl + '/account/' + req.params.username)).data;
-     debug.log("email" + email)
-
-     if(email !== ""){
-          debug.log("USER/:USERNAME ROUTE: EMAIL" + email)
-
-          let user = await service.getUserByEmail(email);
-          if(user === null){
-               user = await service.addUser(email)
-          }
-
-          debug.log("USER/:USERNAME ROUTE: USER" + user)
-          if(user.followers && user.following){
-               ret.user = {
-                    "followers": user.followers.length ,
-                    "following": user.following.length ,
-                    "email": email
-               }
-
-          }else{
-               ret.user = {
-                    "followers": 0,
-                    "following": 0,
-                    "email": email
-               }
-          }
-
-          ret.status = env.statusOk;
-          debug.log(ret);
-          debug.log("OUTPUT: " + JSON.stringify(ret))
-
-          res.send(JSON.stringify(ret));
-     }else{
-          ret.status = env.statusError;
-          ret.error = "USER DNE"
-          debug.log(ret);
-          res.send(ret)
-     }
-
-
+     debug.log("INPUT: /user/:username: " + JSON.stringify(req.params));
+     res.send(JSON.parse(await service.getOrCreateUserByUsername(req.params.username)));
 });
 router.get('/user/:username/posts', async (req, res, next)=>{
      debug.log("INPUT: /user/:username/posts" + JSON.stringify(req.params))
@@ -118,6 +75,7 @@ router.get('/user/:username/posts', async (req, res, next)=>{
 
 
 router.post('/follow', async (req, res, next)=>{
+     // console.log(collection.find({email: 'test@test.cccc'}))
      debug.log("INPUT: FOLLOW_ROUTE: /follow" + JSON.stringify(req.body))
 
      debug.log("FOLLOW_ROUTE: top")
@@ -132,10 +90,10 @@ router.post('/follow', async (req, res, next)=>{
 
           if(args.follow === undefined || args.follow === true){
                debug.log("FOLLOW_ROUTE: FOLLOW")
-               ret = await service.follow(user, followUser);
+               ret = await service.follow(user, followUser, true);
           }else{
                debug.log("FOLLOW_ROUTE: UNFOLLOWING")
-               ret = await service.unfollow(user, followUser);
+               ret = await service.follow(user, followUser, false);
           }
      }else{
           debug.log("FOLLOW_ROUTE: user undefined")

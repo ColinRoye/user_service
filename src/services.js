@@ -7,6 +7,7 @@ const axios = require("axios")
 //export db agnostic services
 module.exports={
      addUser: async(email)=>{
+          debug.log("ADDUSER_SERVICE:" + email)
           if(email !== null){
                return await db.addUser(email);
           }
@@ -26,7 +27,7 @@ module.exports={
           if(userCheck && followsUserCheck){
                debug.log("FOLLOW_SERVICE: BOTH USERS EXIST")
 
-               ret.debug = await db.unfollow(username, userCheck, followsUserUsername, followsUserCheck);
+               ret.debug = await db.follow(username, userCheck, followsUserUsername, followsUserCheck);
                ret.status = env.statusOk;
           }else{
                if(userCheck && !followsUserCheck){
@@ -56,13 +57,13 @@ module.exports={
           if(userCheck && followsUserCheck){
                debug.log("UNFOLLOW_SERVICE: BOTH USERS EXIST")
 
-               ret.debug  = await db.follow(username, userCheck, followsUserUsername, followsUserCheck);
+               ret.debug  = await db.unfollow(username, userCheck, followsUserUsername, followsUserCheck);
                debug.log(out);
                ret.status = env.statusOk;
           }else{
                if(userCheck && !followsUserCheck){
                     debug.log("UNFOLLOW_SERVICE: ERROR user exists, but followUser does not")
-                    //await addUser
+                    // await addUser
                }else if(!userCheck && followsUserCheck){
                     debug.log("UNFOLLOW_SERVICE: ERROR followUser exists, but user does not")
                }else{
@@ -77,10 +78,49 @@ module.exports={
           debug.log((JSON.stringify(await db.getUserByEmail(email))))
           return await db.getUserByEmail(email)
      },
-     getFollowers: async(username)=>{
+     getOrCreateUserByUsername: async(username, option)=>{
+          let ret = {}
+          let email = (await axios.get(env.baseUrl + '/account/' + username)).data;
+          debug.log("email" + email)
 
-     },
-     getFollowing: async(username)=>{
+          if(email !== ""){
+               debug.log("getOrCreateUserByEmail: EMAIL" + email)
+
+               let user = await module.exports.getUserByEmail(email);
+               if(user === null){
+                    user = await module.exports.addUser(email)
+               }
+
+               debug.log("getOrCreateUserByEmail: USER" + user)
+               if(user.followers && user.following){
+                    if(option == "arr"){
+                         debug.log("getOrCreateUserByEmail: ARRAY OPTION")
+                         ret.user = {
+                              "followers": user.followers ,
+                              "following": user.following ,
+                              "email": email
+                         }
+                    }else{
+                         ret.user = {
+                              "followers": user.followers.length ,
+                              "following": user.following.length ,
+                              "email": email
+                         }
+                    }
+
+
+               }
+               ret.status = env.statusOk;
+               debug.log(ret);
+               debug.log("getOrCreateUserByEmail OUTPUT: " + JSON.stringify(ret))
+
+               return (ret);
+          }else{
+               ret.status = env.statusError;
+               ret.error = "USER DNE"
+               debug.log(ret);
+               return(ret)
+          }
 
      }
 }
