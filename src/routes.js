@@ -93,9 +93,12 @@ router.post('/follow', async (req, res, next)=>{
           if(args.follow === undefined || args.follow === true){
                debug.log("FOLLOW_ROUTE: FOLLOW")
                ret = await service.follow(user, followUser, true);
+               debug.logIt("finised follow")
           }else{
                debug.log("FOLLOW_ROUTE: UNFOLLOWING")
                ret = await service.follow(user, followUser, false);
+               debug.logIt("finised unfollow")
+
           }
      }else{
           debug.log("FOLLOW_ROUTE: user undefined")
