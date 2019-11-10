@@ -71,8 +71,8 @@ module.exports={
           await User.updateOne({email:userEmail}, {$push:{'following': followname}})
           await User.updateOne({email:followsUserEmail}, {$push:{'followers': username}})
 
-          await followsUser.save();
-          await user.save();
+          // await followsUser.save();
+          // await user.save();
           return "ok";
 
 
