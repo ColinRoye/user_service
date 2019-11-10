@@ -53,14 +53,14 @@ module.exports={
           }
 
 
-          if(followOption == true){
-               debug.log("FOLLOWING OPTION")
-               user.followers.push(followname);
-               followsUser.following.push(username);
+          if(followOption === true){
+               console.log("FOLLOWING OPTION")
+               user.following.push(followname);
+               followsUser.followers.push(username);
           }else{
-               debug.log("UNFOLLOWING OPTION")
+               console.log("UNFOLLOWING OPTION")
                user.following = user.following.filter((elm)=>{return elm != followname})
-               followsUser.following = followsUser.following.filter((elm)=>{return elm != username})
+               followsUser.followers = followsUser.followers.filter((elm)=>{return elm != username})
           }
 
 
@@ -68,11 +68,11 @@ module.exports={
           debug.log("FOLLOW_DATABASE: User follows array" + JSON.stringify(user))
           debug.log("FOLLOW_DATABASE: User follows array" + JSON.stringify(followsUser))
 
-          await User.updateOne({email:userEmail}, {$push:{'following': followname}})
-          await User.updateOne({email:followsUserEmail}, {$push:{'followers': username}})
+          // await User.updateOne({email:userEmail}, {$push:{'following': followname}})
+          // await User.updateOne({email:followsUserEmail}, {$push:{'followers': username}})
 
-          // await followsUser.save();
-          // await user.save();
+          await followsUser.save();
+          await user.save();
           return "ok";
 
 
