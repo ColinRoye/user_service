@@ -65,7 +65,9 @@ router.get('/user/:username/following', async (req, res, next)=>{
 });
 router.get('/user/:username', async (req, res, next)=>{
      debug.log("INPUT: /user/:username: " + JSON.stringify(req.params));
-     res.send(JSON.parse(await service.getOrCreateUserByUsername(req.params.username)));
+     //debug.log("OUTPUT:" + (await service.getOrCreateUserByUsername(req.params.username)));
+
+     res.send((await service.getOrCreateUserByUsername(req.params.username)));
 });
 router.get('/user/:username/posts', async (req, res, next)=>{
      debug.log("INPUT: /user/:username/posts" + JSON.stringify(req.params))

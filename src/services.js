@@ -13,7 +13,7 @@ module.exports={
           }
           return "error"
      },
-     follow: async(username, followsUserUsername)=>{
+     follow: async(username, followsUserUsername, follow)=>{
           debug.log("FOLLOW_SERVICE: TOP")
           debug.log("FOLLOW_SERVICE: USERNAME " + username)
           debug.log("FOLLOW_SERVICE: USERNAME " + followsUserUsername)
@@ -27,7 +27,7 @@ module.exports={
           if(userCheck && followsUserCheck){
                debug.log("FOLLOW_SERVICE: BOTH USERS EXIST")
 
-               ret.debug = await db.follow(username, userCheck, followsUserUsername, followsUserCheck);
+               ret.debug = await db.follow(username, userCheck, followsUserUsername, followsUserCheck, follow);
                ret.status = env.statusOk;
           }else{
                if(userCheck && !followsUserCheck){
